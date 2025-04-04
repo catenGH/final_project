@@ -15,4 +15,3 @@ def get_cooklevel(time):
 #Example usage: A recipe has a 50 min total prep time.
 cook_level = get_cooklevel(50)
 print(cook_level)
-    

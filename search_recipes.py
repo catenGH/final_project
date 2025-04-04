@@ -10,7 +10,7 @@ def search_recipes(usr_ingr):
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(["Recipe Name", "Thumbnail Link", "Cook Time", "Recipe Source"])
 
-    key = "5cb09004fe27449689868405b5a33789"
+    key = "6eccbe1676054b1e9304c8d1f5225764"
     search = requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={usr_ingr}&apiKey={key}").json()
 
     for recipe in search:

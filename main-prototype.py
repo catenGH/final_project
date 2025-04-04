@@ -53,4 +53,6 @@ while True:
 cooking_level = get_cooklevel(int(usr_input))
 print(f"Based on your answer, we've determined that your cooking level is {cooking_level}!")
 
+print("Thank you so much for testing out our prototype! Any feedback is appreciated!")
+
 

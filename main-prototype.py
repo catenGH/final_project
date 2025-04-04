@@ -10,6 +10,8 @@ from get_ingredientlist import get_ingr_list
 from search_recipes import search_recipes
 from get_cookinglevel import get_cooklevel
 
+div = "----------------"
+
 print("Welcome to our prototype! This will show the various functions we've created and explain how we plan to use them!")
 print("We've also used the time module to spread out print statements for readability.")
 time.sleep(5)
@@ -19,9 +21,10 @@ time.sleep(5)
 print(get_ingr_list())
 time.sleep(2)
 
+print(div)
+
 print("This next function searches for recipes based on user-selected ingredients, and stores these recipies in a csv.")
 print("Test it out now!")
-
 ingredient_list = []
 ingredient = input("Give us an ingredient:")
 ingredient_list.append(ingredient)
@@ -41,6 +44,8 @@ time.sleep(2)
 print("Done! The results are stored in the csv titled 'recipes.csv'")
 print("This csv holds multiple pieces of info on eache recipe returned from the api, and will be used to show results on the front end.")
 time.sleep(4)
+
+print(div)
 
 print("Our next function takes an input of cooking time and returns a skill level assignment.")
 print("We plan to later use this to filter recipies by cook time/skill level.")

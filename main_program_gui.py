@@ -3,7 +3,7 @@ import tkinter as tk
 import requests
 from PIL import ImageTk, Image
 from io import BytesIO
-
+  
 root = tk.Tk()
 root.title("Fridge to Food")
 
@@ -11,7 +11,7 @@ mainframe = tk.Frame(root)
 mainframe.pack(fill="both", expand=True)
 
 heading = tk.Frame(mainframe, bg="mediumorchid3")
-heading.pack(side="top", fill="x")
+heading.pack(side="top", fill="x")   
 
 response = requests.get("https://i.postimg.cc/tCLRtKB7/logo-1.png")
 image_info = BytesIO(response.content)

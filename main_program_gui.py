@@ -19,11 +19,8 @@ logo_img = Image.open(image_info)
 logo_img.thumbnail((200, 200))
 logo = ImageTk.PhotoImage(logo_img)
 panel = tk.Label(heading, image=logo, bg="mediumorchid3")
-panel.image = logo
+panel.image = logo 
 panel.pack(side="left", padx=20)
-
-title = tk.Label(heading, text="Fridge to Food", font=("Helvetica 24 bold", 20, "bold"), bg="mediumorchid3", fg="white", anchor="w")
-title.pack(side="left", padx=20)
 
 search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3')
 search.pack(side="right", padx=20)

@@ -1,4 +1,3 @@
-
 from tkinter import ttk
 import tkinter as tk
 import requests
@@ -57,7 +56,6 @@ filters_canvas = tk.Canvas(filters,bg="gray", width=200,highlightbackground='gre
 filters_canvas.pack(side="left", padx=10, pady=10, fill="y")
 
 
-# figure out why scrollbar isn't working
 filter_scroll = ttk.Scrollbar(filters, orient="vertical",takefocus= True, command=filters_canvas.yview)
 filter_scroll.pack(side="right", fill="y")
 

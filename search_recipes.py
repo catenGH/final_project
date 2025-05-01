@@ -29,9 +29,9 @@ def search_recipes(ingredient_list):
         csv_writer.writerow([recipe_name, recipe_pic, ingredients_list, cook_time, recipe_diets, recipe_cuisine, recipe_source])
     csv_file.close()
 
-# ingr_list = ["chicken", "onion"]
+ingr_list = ["chicken", "onion"]
 
-# search_recipes(ingr_list)
+search_recipes(ingr_list)
 
 
 

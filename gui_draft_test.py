@@ -15,27 +15,27 @@ import pandas as pd
 
 #usr_ingr should be a list of the ingredients a user submits
 #Creates a csv of recipes
-def search_recipes(usr_ingr):
-    csv_file = open("recipes.csv", "w", newline="", encoding="utf-8")
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(["Recipe Name", "Thumbnail Link", "Cook Time", "Recipe Source"])
+# def search_recipes(usr_ingr):
+#     csv_file = open("recipes.csv", "w", newline="", encoding="utf-8")
+#     csv_writer = csv.writer(csv_file)
+#     csv_writer.writerow(["Recipe Name", "Thumbnail Link", "Cook Time", "Recipe Source"])
 
-    key = "6eccbe1676054b1e9304c8d1f5225764"
-    search = requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={usr_ingr}&apiKey={key}").json()
+#     key = "6eccbe1676054b1e9304c8d1f5225764"
+#     search = requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={usr_ingr}&apiKey={key}").json()
 
-    for recipe in search:
-        id_num = recipe["id"]
-        recipe_info = requests.get(f"https://api.spoonacular.com/recipes/{id_num}/information?apiKey={key}").json()
-        recipe_name = recipe_info["title"]
-        recipe_pic = recipe_info["image"]
-        cook_time = recipe_info["readyInMinutes"]
-        recipe_time = f"{cook_time} minutes"
-        recipe_source = recipe_info["sourceUrl"]
-        csv_writer.writerow([recipe_name, recipe_pic, recipe_time, recipe_source])
-    csv_file.close()
+#     for recipe in search:
+#         id_num = recipe["id"]
+#         recipe_info = requests.get(f"https://api.spoonacular.com/recipes/{id_num}/information?apiKey={key}").json()
+#         recipe_name = recipe_info["title"]
+#         recipe_pic = recipe_info["image"]
+#         cook_time = recipe_info["readyInMinutes"]
+#         recipe_time = f"{cook_time} minutes"
+#         recipe_source = recipe_info["sourceUrl"]
+#         csv_writer.writerow([recipe_name, recipe_pic, recipe_time, recipe_source])
+#     csv_file.close()
 
-list = ["chicken", "onion"]
-search_recipes(list)
+# list = ["chicken", "onion"]
+# search_recipes(list)
 
 #--------------------
 
@@ -114,8 +114,8 @@ for i in cuisine_list:
 recipes = tk.Frame(mainframe, bg="white")
 recipes.pack(fill="both", padx=10, pady=10)
 
-recipe_heading = tk.Label(recipes, text="Recipes", font=(20), bg="white")
-recipe_heading.pack()
+recipe_heading = tk.Label(recipes, text="Recipes", font=("Arial", 20, "bold"), bg="white")
+recipe_heading.grid(column=1, row=0, pady= 10)
 
 # recipe_examples = {["Recipe 1", "picture", "20 minutes", "vegan", "Mediterranean", "chickpeas, lentils, paprika", "random website"],
 #                    ["Recipe 2", "picture", "10 minutes", "none", "Chinese", "pork belly, soy sauce, sugar", "other website"]}
@@ -146,39 +146,72 @@ recipe_heading.pack()
 data = pd.read_csv("recipes.csv")
 
 recipe_list = data["Recipe Name"].tolist()
+
 img_list = data["Thumbnail Link"].tolist()
+img_ref_list = []
 
-def load_img(url):
-    response = requests.get(url)
-    img_info = BytesIO(response.content)
-    pil_img = Image.open(image_info)
-    return ImageTk.PhotoImage(pil_img)
+# def load_img(url):
+#     response = requests.get(url)
+#     img_info = BytesIO(response.content)
+#     pil_img = Image.open(image_info)
+#     return ImageTk.PhotoImage(pil_img)
 
-def show_img(url):
-    global img_refrence
-    pil_img = load_img(url)
-    if pil_img is not None:
-        recipe_img.delete("all")
-        recipe_img.create_image(300, 300, anchor="center", image=pil_img)
-        img_refrence = pil_img
+# def show_img(url):
+#     global img_refrence
+#     pil_img = load_img(url)
+#     if pil_img is not None:
+#         recipe_img.delete("all")
+#         recipe_img.create_image(150, 150, anchor="center", image=pil_img)
+#         img_refrence = pil_img
+
+img = 0
+rec_row = 1
+rec_col = 0
 
 for i in recipe_list:
-    img = 0
+    if rec_col == 3:
+        rec_col = 0
+        rec_row += 1
+
+    img_link = img_list[img]
 
     recipe_box = tk.Frame(recipes, bg="gray", bd=2, padx=10, pady=10)
-    recipe_box.pack(side="left", padx=10, pady=10)
     recipe_title = tk.Label(recipe_box, text=i, bg="gray")
-    recipe_img = tk.Canvas(recipe_box, width=300, height=300, bg="white")
-    show_img(img_list[img])
-
-    recipe_img.pack()
+    recipe_canvas = tk.Canvas(recipe_box, width=300, height=300, bg="white")
+    recipe_canvas.pack()
     recipe_title.pack(anchor="w")
-    print(img_list[img])
+    
+    response = requests.get(img_link)
+    info = BytesIO(response.content)
+    image = Image.open(info)
+    pil_img = ImageTk.PhotoImage(image)
+
+    recipe_canvas.create_image(150, 150, anchor="center", image=pil_img)
+    img_ref_list.append(pil_img)
+
+    recipe_box.grid(row=rec_row,column=rec_col, padx=10, pady=10)
+
     img+=1
+    rec_col += 1
 
+# img_link = img_list[0]
 
-# figure out why scrollbar isn't working
-filter_scroll = tk.Scrollbar(filters, orient="vertical")
-filter_scroll.pack(side="right", fill="y")
+# box = tk.Frame(recipes)
+# box.pack()
+
+# canvas = tk.Canvas(box, width=300, height=300, bg="white")
+
+# global img_refrence
+
+# response = requests.get(img_link)
+# info = BytesIO(response.content)
+# img = Image.open(info)
+# pil_img = ImageTk.PhotoImage(img)
+
+# canvas.delete("all")
+# canvas.create_image(150, 150, anchor="center", image=pil_img)
+# img_refrence = pil_img
+
+# canvas.pack()
 
 root.mainloop()

@@ -120,28 +120,28 @@ recipe_heading.pack()
 # recipe_examples = {["Recipe 1", "picture", "20 minutes", "vegan", "Mediterranean", "chickpeas, lentils, paprika", "random website"],
 #                    ["Recipe 2", "picture", "10 minutes", "none", "Chinese", "pork belly, soy sauce, sugar", "other website"]}
 
-#NOTE NOTE NOTE NOTE
-def search_recipes(usr_ingr):
-    csv_file = open("recipes.csv", "w", newline="", encoding="utf-8")
-    csv_writer = csv.writer(csv_file)
-    csv_writer.writerow(["Recipe Name", "Thumbnail Link", "Cook Time", "Recipe Source"])
+# #NOTE NOTE NOTE NOTE
+# def search_recipes(usr_ingr):
+#     csv_file = open("recipes.csv", "w", newline="", encoding="utf-8")
+#     csv_writer = csv.writer(csv_file)
+#     csv_writer.writerow(["Recipe Source", "Recipe Name", "Thumbnail Link", "Cook Time",])
 
-    key = "6eccbe1676054b1e9304c8d1f5225764"
-    search = requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={usr_ingr}&apiKey={key}").json()
+#     key = "6eccbe1676054b1e9304c8d1f5225764"
+#     search = requests.get(f"https://api.spoonacular.com/recipes/findByIngredients?ingredients={usr_ingr}&apiKey={key}").json()
 
-    for recipe in search:
-        id_num = recipe["id"]
-        recipe_info = requests.get(f"https://api.spoonacular.com/recipes/{id_num}/information?apiKey={key}").json()
-        recipe_name = recipe_info["title"]
-        recipe_pic = recipe_info["image"]
-        cook_time = recipe_info["readyInMinutes"]
-        recipe_time = f"{cook_time} minutes"
-        recipe_source = recipe_info["sourceUrl"]
-        csv_writer.writerow([recipe_name, recipe_pic, recipe_time, recipe_source])
-    csv_file.close()
+#     for recipe in search:
+#         id_num = recipe["id"]
+#         recipe_info = requests.get(f"https://api.spoonacular.com/recipes/{id_num}/information?apiKey={key}").json()
+#         recipe_name = recipe_info["title"]
+#         recipe_pic = recipe_info["image"]
+#         cook_time = recipe_info["readyInMinutes"]
+#         recipe_time = f"{cook_time} minutes"
+#         recipe_source = recipe_info["sourceUrl"]
+#         csv_writer.writerow([recipe_source, recipe_name, recipe_pic, recipe_time])
+#     csv_file.close()
 
-list = ["chicken", "onion"]
-search_recipes(list)
+# list = ["chicken", "onion"]
+# search_recipes(list)
 
 data = pd.read_csv("recipes.csv")
 
@@ -173,6 +173,7 @@ for i in recipe_list:
 
     recipe_img.pack()
     recipe_title.pack(anchor="w")
+    print(img_list[img])
     img+=1
 
 

@@ -2,7 +2,7 @@ import requests
 import json
 import csv
 
-def ingredient_input(ingredient_list):
+def search_recipes(ingredient_list):
     csv_file = open("recipes.csv", "w", newline="", encoding="utf-8")
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(["Recipe Name", "Thumbnail Link", "Ingredients", "Cook Time (in minutes)", "Diet", "Cuisine", "Recipe Source"])
@@ -29,9 +29,9 @@ def ingredient_input(ingredient_list):
         csv_writer.writerow([recipe_name, recipe_pic, ingredients_list, cook_time, recipe_diets, recipe_cuisine, recipe_source])
     csv_file.close()
 
-ingr_list = ["chicken", "onion"]
+# ingr_list = ["chicken", "onion"]
 
-ingredient_input(ingr_list)
+# search_recipes(ingr_list)
 
 
 

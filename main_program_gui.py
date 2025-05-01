@@ -1,9 +1,14 @@
+#Imports
 from tkinter import ttk
 import tkinter as tk
 import requests
 from PIL import ImageTk, Image
 from io import BytesIO
-  
+
+#Function Imports
+from search_recipes import search_recipes
+
+#Main Setup
 root = tk.Tk()
 root.title("Fridge to Food")
 
@@ -13,6 +18,7 @@ mainframe.pack(fill="both", expand=True)
 heading = tk.Frame(mainframe, bg="mediumorchid3")
 heading.pack(side="top", fill="x")   
 
+#Logo
 response = requests.get("https://i.postimg.cc/tCLRtKB7/logo-1.png")
 image_info = BytesIO(response.content)
 logo_img = Image.open(image_info)
@@ -35,6 +41,7 @@ ingredients_input.pack(side="right")
 subheading = tk.Frame(mainframe, bg="light gray")
 subheading.pack(side="top", fill="x")
 
+#Instruction Labels
 instructions = tk.Label(subheading, text="Welcome to Fridge to Food!  Search for ingredients, add the ingredients in your fridge by using ✚, and search for recipes by pressing 🔎!", bg="light gray")
 instructions.pack(pady=5)
 
@@ -44,14 +51,12 @@ other_stuff.pack(pady=5)
 more_instructions = tk.Label(subheading, text="↙ You can also filter for specific cook times and cuisines!", bg="light gray")
 more_instructions.pack(pady=5)
 
+#Side Filters
 filters = tk.Frame(mainframe, bg="gray", width=200)
 filters.pack(side="left", padx=10, pady=10, fill="y")
 
-#new
-#------------------------------------------------------------------------------------------------------------------------------------------------
 filters_canvas = tk.Canvas(filters,bg="gray", width=200,highlightbackground='grey')
 filters_canvas.pack(side="left", padx=10, pady=10, fill="y")
-
 
 filter_scroll = ttk.Scrollbar(filters, orient="vertical",takefocus= True, command=filters_canvas.yview)
 filter_scroll.pack(side="right", fill="y")
@@ -63,7 +68,6 @@ filters_canvas.create_window((0, 0), window=frame_inside_canvas, anchor="nw")
 
 cooktime = tk.Frame(frame_inside_canvas, bg="gray")
 cooktime.pack()
-
 
 cooktime_title = tk.Label(frame_inside_canvas, text="Cook Time (in minutes)", bg="gray", fg="white",font=('Helvetica',15,'underline'))
 cooktime_title.pack()
@@ -94,9 +98,6 @@ recipes.pack(fill="both", padx=10, pady=10)
 recipe_heading = tk.Label(recipes, text="Recipes", font=(20), bg="white")
 recipe_heading.pack()
 
-# recipe_examples = {["Recipe 1", "picture", "20 minutes", "vegan", "Mediterranean", "chickpeas, lentils, paprika", "random website"],
-#                    ["Recipe 2", "picture", "10 minutes", "none", "Chinese", "pork belly, soy sauce, sugar", "other website"]}
-
 for i in range(0, 3):
     recipe_box = tk.Frame(recipes, bg="gray", bd=2, padx=10, pady=10)
     recipe_box.pack(side="left", padx=10, pady=10)
@@ -107,7 +108,6 @@ def on_frame_configure(event):
     filters_canvas.configure(scrollregion=filters_canvas.bbox("all"))
 
 filters_canvas.bind("<Configure>", on_frame_configure)
-#------------------------------------------------------------------------------------------------------------------------------------------------
 
 root.mainloop()
 

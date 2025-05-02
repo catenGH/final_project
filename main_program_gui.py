@@ -92,6 +92,8 @@ for i in cuisine_list:
     cuisine = tk.Checkbutton(frame_inside_canvas, text=i, bg="gray")
     cuisine.pack(anchor="w")
 
+
+#Recipe Frames 
 recipes = tk.Frame(mainframe, bg="white")
 recipes.pack(fill="both", padx=10, pady=10)
 

@@ -29,13 +29,24 @@ panel = tk.Label(heading, image=logo, bg="mediumorchid3")
 panel.image = logo 
 panel.pack(side="left", padx=20)
 
+#Ingredient Input
+ingredient_list = []
+
+#Adds ingredient to above list and deletes input from the textbox
+def add_ingr(ingr):
+    ingredient_list.append(ingr)
+    ingredients_input.delete(0, "end")
+
 search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3')
 search.pack(side="right", padx=20)
 
-add_ingredient = tk.Button(heading, text="✚",highlightbackground='mediumorchid3')
+add_ingredient = tk.Button(heading, text="✚",highlightbackground='mediumorchid3',
+                           command=lambda: add_ingr(ingredient.get()))
 add_ingredient.pack(side="right", padx=10)
 
 ingredient = tk.StringVar()
+ingredient.set("")
+
 ingredients_input = tk.Entry(heading, textvariable=ingredient, width=50)
 ingredients_input.pack(side="right")
 

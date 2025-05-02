@@ -36,8 +36,10 @@ ingredient_list = []
 def add_ingr(ingr):
     ingredient_list.append(ingr)
     ingredients_input.delete(0, "end")
+    print(ingredient_list)
 
-search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3')
+search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3',
+                   command=lambda: search_recipes(ingredient_list))
 search.pack(side="right", padx=20)
 
 add_ingredient = tk.Button(heading, text="✚",highlightbackground='mediumorchid3',
@@ -132,17 +134,6 @@ def on_recipes_configure(event):
 
 recipes_inner_frame.bind("<Configure>", on_recipes_configure)
 
-#Recipe Search
-'''NOTE: Please comment out the following section when not testing search function to save on API req limit'''
-#(I'm commenting it out for now already- Corey)
-#---------------------------------
-# #NOTE: Ingredients list needs to be connected to front end to take ingredients from user'
-# #Currently contains random ingr for testing purposes 
-# ing_list = ["chicken", "onion"]
-# #Make sure the ingridient list is in parenthesis here:
-# search_recipes(ing_list)
-#---------------------------------
-
 #Pandas CSV functions converting necessary data to lists 
 data = pd.read_csv("recipes.csv")
 
@@ -173,15 +164,18 @@ for rec in recipe_list:
     recipe_canvas.pack()
     recipe_title.pack(anchor="w")
     
-    #Gets image and adds it to canvas
-    response = requests.get(img_link)
-    info = BytesIO(response.content)
-    image = Image.open(info)
-    pil_img = ImageTk.PhotoImage(image)
-    recipe_canvas.create_image(150, 150, anchor="center", image=pil_img)
+    try:
+        #Gets image and adds it to canvas
+        response = requests.get(img_link)
+        info = BytesIO(response.content)
+        image = Image.open(info)
+        pil_img = ImageTk.PhotoImage(image)
+        recipe_canvas.create_image(150, 150, anchor="center", image=pil_img)
 
-    #Very important to keep this, otherwise PIL will forget the images and not display them!!
-    img_ref_list.append(pil_img)
+        #Very important to keep this, otherwise PIL will forget the images and not display them!!
+        img_ref_list.append(pil_img)
+    except:
+        recipe_canvas.create_text(150, 150, text="No Image :(", fill="black")
 
     recipe_box.grid(row=rec_row,column=rec_col, padx=10, pady=10)
 

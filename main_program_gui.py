@@ -93,14 +93,33 @@ for i in cuisine_list:
     cuisine = tk.Checkbutton(frame_inside_canvas, text=i, bg="gray")
     cuisine.pack(anchor="w")
 
+def on_frame_configure(event):
+    filters_canvas.configure(scrollregion=filters_canvas.bbox("all"))
 
-#Recipe Frames 
+frame_inside_canvas.bind("<Configure>", on_frame_configure)
+
+#Recipe Frame
 recipes = tk.Frame(mainframe, bg="white")
-recipes.pack(fill="both", padx=10, pady=10)
+recipes.pack(fill="both", expand=True, padx=10, pady=10)
 
-#Switched to grid instead of pack to not interfere w/ recipe boxes in grid
 recipe_heading = tk.Label(recipes, text="Recipes", font=("Arial", 20, "bold"), bg="white")
-recipe_heading.grid(column=1, row=0, pady= 10)
+recipe_heading.pack()
+
+recipes_canvas = tk.Canvas(recipes, bg="white", highlightbackground='white')
+recipes_canvas.pack(side="left", fill="both", expand=True)
+
+recipes_scroll = ttk.Scrollbar(recipes, orient="vertical", command=recipes_canvas.yview)
+recipes_scroll.pack(side="right", fill="y")
+
+recipes_canvas.configure(yscrollcommand=recipes_scroll.set)
+
+recipes_inner_frame = tk.Frame(recipes_canvas, bg="white")
+recipes_canvas.create_window((0, 0), window=recipes_inner_frame, anchor="nw")
+
+def on_recipes_configure(event):
+    recipes_canvas.configure(scrollregion=recipes_canvas.bbox("all"))
+
+recipes_inner_frame.bind("<Configure>", on_recipes_configure)
 
 #Recipe Search
 '''NOTE: Please comment out the following section when not testing search function to save on API req limit'''
@@ -137,7 +156,7 @@ for rec in recipe_list:
 
     img_link = img_list[img]
 
-    recipe_box = tk.Frame(recipes, bg="gray", bd=2, padx=10, pady=10)
+    recipe_box = tk.Frame(recipes_inner_frame, bg="gray", bd=2, padx=10, pady=10)
     recipe_title = tk.Label(recipe_box, text=rec, bg="gray")
     recipe_canvas = tk.Canvas(recipe_box, width=300, height=300, bg="white")
     recipe_canvas.pack()
@@ -159,11 +178,6 @@ for rec in recipe_list:
     img+=1
     rec_col += 1
 
-
-def on_frame_configure(event):
-    filters_canvas.configure(scrollregion=filters_canvas.bbox("all"))
-
-filters_canvas.bind("<Configure>", on_frame_configure)
 
 root.mainloop()
 

@@ -4,8 +4,9 @@ import tkinter as tk
 import requests
 from PIL import ImageTk, Image
 from io import BytesIO
+import pandas as pd
 
-#Function Imports
+#Function Imports from py files
 from search_recipes import search_recipes
 
 #Main Setup
@@ -97,14 +98,67 @@ for i in cuisine_list:
 recipes = tk.Frame(mainframe, bg="white")
 recipes.pack(fill="both", padx=10, pady=10)
 
-recipe_heading = tk.Label(recipes, text="Recipes", font=(20), bg="white")
-recipe_heading.pack()
+#Switched to grid instead of pack to not interfere w/ recipe boxes in grid
+recipe_heading = tk.Label(recipes, text="Recipes", font=("Arial", 20, "bold"), bg="white")
+recipe_heading.grid(column=1, row=0, pady= 10)
 
-for i in range(0, 3):
+#Recipe Search
+'''NOTE: Please comment out the following section when not testing search function to save on API req limit'''
+#(I'm commenting it out for now already- Corey)
+#---------------------------------
+# #NOTE: Ingredients list needs to be connected to front end to take ingredients from user'
+# #Currently contains random ingr for testing purposes 
+# ing_list = ["chicken", "onion"]
+# #Make sure the ingridient list is in parenthesis here:
+# search_recipes(ing_list)
+#---------------------------------
+
+#Pandas CSV functions converting necessary data to lists 
+data = pd.read_csv("recipes.csv")
+
+recipe_list = data["Recipe Name"].tolist()
+img_list = data["Thumbnail Link"].tolist()
+
+#Ref list makes sure pillow does not forget images and displays them properly
+img_ref_list = []
+
+#Global variables to iterate through the images and frames properly
+img = 0
+rec_row = 1
+rec_col = 0
+
+#rec stands for recipe
+for rec in recipe_list:
+    #If there's already 3 in a row, move down a row (so that way all recipes will fit on most screens)
+    #NOTE: Cate, let me know if this looks good on your end, thanks! -Corey
+    if rec_col == 3:
+        rec_col = 0
+        rec_row += 1
+
+    img_link = img_list[img]
+
     recipe_box = tk.Frame(recipes, bg="gray", bd=2, padx=10, pady=10)
-    recipe_box.pack(side="left", padx=10, pady=10)
-    recipe_title = tk.Label(recipe_box, text="example", bg="gray")
+    recipe_title = tk.Label(recipe_box, text=rec, bg="gray")
+    recipe_canvas = tk.Canvas(recipe_box, width=300, height=300, bg="white")
+    recipe_canvas.pack()
     recipe_title.pack(anchor="w")
+    
+    #Gets image and adds it to canvas
+    response = requests.get(img_link)
+    info = BytesIO(response.content)
+    image = Image.open(info)
+    pil_img = ImageTk.PhotoImage(image)
+    recipe_canvas.create_image(150, 150, anchor="center", image=pil_img)
+
+    #Very important to keep this, otherwise PIL will forget the images and not display them!!
+    img_ref_list.append(pil_img)
+
+    recipe_box.grid(row=rec_row,column=rec_col, padx=10, pady=10)
+
+    #Iterates through images + columns
+    img+=1
+    rec_col += 1
+
 
 def on_frame_configure(event):
     filters_canvas.configure(scrollregion=filters_canvas.bbox("all"))

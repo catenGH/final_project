@@ -49,16 +49,19 @@ def add_ingr(ingr):
 
 def search_display(ingr_list):
     #Uses search recipe function and displays the recipes returned
-    search_recipes(ingr_list)
+
+    #NOTE: Comment out this when not testing search
+    # search_recipes(ingr_list)
 
     #Pandas CSV functions converting necessary data to lists 
     data = pd.read_csv("recipes.csv")
 
     recipe_list = data["Recipe Name"].tolist()
     img_list = data["Thumbnail Link"].tolist()
+    diet_list = data["Diet"].tolist()
 
-    #Global variables to iterate through the images and frames properly
-    img = 0
+    #Global variables to iterate through the images, diets, and frames properly
+    itr = 0
     rec_row = 1
     rec_col = 0
 
@@ -70,14 +73,15 @@ def search_display(ingr_list):
             rec_col = 0
             rec_row += 1
 
-        img_link = img_list[img]
+        img_link = img_list[itr]
 
         recipe_box = tk.Frame(recipes_inner_frame, bg="gray", bd=2, padx=10, pady=10)
-        recipe_title = tk.Label(recipe_box, text=rec, bg="gray")
+        recipe_title = tk.Label(recipe_box, text=rec, font=('Helvetica',12, "bold"), bg="gray", fg="white")
         recipe_canvas = tk.Canvas(recipe_box, width=300, height=300, bg="white")
         recipe_canvas.pack()
         recipe_title.pack(anchor="w")
         
+        #Img display, will display a default canvas if img doesn't work
         try:
             #Gets image and adds it to canvas
             response = requests.get(img_link)
@@ -91,10 +95,23 @@ def search_display(ingr_list):
         except:
             recipe_canvas.create_text(150, 150, text="No Image :(", fill="black")
 
+        #Diets Display
+        #Diets that will display:
+        disp_diet_list = ["vegan", "vegetarian", "gluten free", "dairy free"]
+
+        for diet in disp_diet_list:
+            if diet in diet_list[itr]:
+                diet_label = tk.Label(recipe_box, text=f"{diet} ✔", bg="gray")
+
+            else:
+                diet_label =tk.Label(recipe_box, text=f"{diet} ✘", bg="gray")
+            
+            diet_label.pack(anchor="w")
+
         recipe_box.grid(row=rec_row,column=rec_col, padx=10, pady=10)
 
         #Iterates through images + columns
-        img+=1
+        itr+=1
         rec_col += 1
     
     #Clears ingredient list after searching

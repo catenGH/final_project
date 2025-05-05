@@ -159,6 +159,17 @@ filters_canvas.configure(yscrollcommand=filter_scroll.set)
 frame_inside_canvas = tk.Frame(filters_canvas, bg="gray")
 filters_canvas.create_window((0, 0), window=frame_inside_canvas, anchor="nw")
 
+
+#Filter Code --------------------------
+#Makes a dictionary for checkboxes from a list, using each list item as keys and giving a val of T/F to each
+# def make_checkdict(list):
+#     check_dict = {}
+#     for i in list:
+#         check_dict.update({i:False})
+#     return check_dict
+#NOTE: Make a similar function, use val as check state for check boxes 
+#THIS WILL BE USEFUL: https://www.tutorialspoint.com/creating-multiple-check-boxes-using-a-loop-in-tkinter 
+
 cooktime = tk.Frame(frame_inside_canvas, bg="gray")
 cooktime.pack()
 
@@ -166,6 +177,8 @@ cooktime_title = tk.Label(frame_inside_canvas, text="Cook Time (in minutes)", bg
 cooktime_title.pack()
 
 cooktimes = ["<60", ">=60 & <=120", ">120"]
+# cooktime_checkdict = make_checkdict(cooktimes)
+
 for time in cooktimes:
     cooktime_filter = tk.Checkbutton(frame_inside_canvas, text=time, bg="gray")
     cooktime_filter.pack(anchor="w")
@@ -191,7 +204,7 @@ def on_frame_configure(event):
 frame_inside_canvas.bind("<Configure>", on_frame_configure)
 
 #Recipe Frame
-recipes = tk.Frame(mainframe, bg="white")
+recipes = tk.Frame(mainframe, bg="white" )
 recipes.pack(fill="both", expand=True, padx=10, pady=10)
 
 recipe_heading = tk.Label(recipes, text="Recipes", font=("Arial", 20, "bold"), bg="white")

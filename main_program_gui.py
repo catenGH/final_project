@@ -161,14 +161,31 @@ filters_canvas.create_window((0, 0), window=frame_inside_canvas, anchor="nw")
 
 
 #Filter Code --------------------------
-#Makes a dictionary for checkboxes from a list, using each list item as keys and giving a val of T/F to each
-# def make_checkdict(list):
-#     check_dict = {}
-#     for i in list:
-#         check_dict.update({i:False})
-#     return check_dict
-#NOTE: Make a similar function, use val as check state for check boxes 
-#THIS WILL BE USEFUL: https://www.tutorialspoint.com/creating-multiple-check-boxes-using-a-loop-in-tkinter 
+def on_checkbox_change(checkbox_value, checkbox_var):
+   if checkbox_var.get():
+      print(f"{checkbox_value} Checked")
+   else:
+      print(f"{checkbox_value} unchecked")
+
+
+def create_checkboxes(frame, list):
+   #Stores the boolean val for each box (checked vs unchecked)
+   checkboxes = []  
+
+   # Loop to create checkboxes dynamically
+   for i in list:
+      checkbox_var = tk.BooleanVar()  # Variable to track the state of the checkbox
+      checkbox = tk.Checkbutton(
+         frame,
+         text=i,
+         variable=checkbox_var,
+         bg="gray",
+         command=lambda i=i, var=checkbox_var: on_checkbox_change(i, var)
+      )
+      checkbox.pack(anchor="w")  # Place the checkbox in the window
+      checkboxes.append(checkbox_var)  # Add the variable to the list
+
+   return checkboxes 
 
 cooktime = tk.Frame(frame_inside_canvas, bg="gray")
 cooktime.pack()
@@ -177,11 +194,11 @@ cooktime_title = tk.Label(frame_inside_canvas, text="Cook Time (in minutes)", bg
 cooktime_title.pack()
 
 cooktimes = ["<60", ">=60 & <=120", ">120"]
-# cooktime_checkdict = make_checkdict(cooktimes)
+create_checkboxes(frame_inside_canvas, cooktimes)
 
-for time in cooktimes:
-    cooktime_filter = tk.Checkbutton(frame_inside_canvas, text=time, bg="gray")
-    cooktime_filter.pack(anchor="w")
+# for time in cooktimes:
+#     cooktime_filter = tk.Checkbutton(frame_inside_canvas, text=time, bg="gray")
+#     cooktime_filter.pack(anchor="w")
 
 cuisines = tk.Frame(frame_inside_canvas, bg="gray")
 cuisines.pack(padx=10, pady=10)
@@ -194,9 +211,11 @@ cuisine_list = ["African", "Asian", "American", "British", "Cajun", "Caribbean",
                 "Japanese", "Jewish", "Korean", "Latin American", "Mediterranean", "Mexican",
                 "Middle Eastern", "Nordic", "Southern", "Spanish", "Thai", "Vietnamese"]
 
-for i in cuisine_list:
-    cuisine = tk.Checkbutton(frame_inside_canvas, text=i, bg="gray")
-    cuisine.pack(anchor="w")
+create_checkboxes(frame_inside_canvas, cuisine_list)
+
+# for i in cuisine_list:
+#     cuisine = tk.Checkbutton(frame_inside_canvas, text=i, bg="gray")
+#     cuisine.pack(anchor="w")
 
 def on_frame_configure(event):
     filters_canvas.configure(scrollregion=filters_canvas.bbox("all"))
@@ -231,4 +250,4 @@ root.mainloop()
 #sources:
 # https://stackoverflow.com/questions/71677889/create-a-scrollbar-to-a-full-window-tkinter-in-python - used this to figure out how to scrol
 # https://stackoverflow.com/questions/60594244/tkinter-scrollregion-not-updating?utm_source=chatgpt.com - updates the scroll region if its needed or not based on window size3
-
+# https://www.tutorialspoint.com/creating-multiple-check-boxes-using-a-loop-in-tkinter - Used to help with code for checkbox filters

@@ -53,7 +53,7 @@ def search_display(ingr_list):
     #Uses search recipe function and displays the recipes returned
 
     #NOTE: Comment out this when not testing search
-    # search_recipes(ingr_list)
+    search_recipes(ingr_list)
 
     #Pandas CSV functions converting necessary data to lists 
     data = pd.read_csv("recipes.csv")
@@ -116,7 +116,7 @@ def search_display(ingr_list):
         itr+=1
         rec_col += 1
     
-    #Clears ingredient list after searching
+def clear_ing_list():
     ingredient_list = []
 
 search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3',
@@ -176,7 +176,7 @@ def create_checkboxes(frame, list):
 
    # Loop to create checkboxes dynamically
    for i in list:
-      checkbox_var = tk.BooleanVar()  # Variable to track the state of the checkbox
+      checkbox_var = tk.BooleanVar()  
       checkbox = tk.Checkbutton(
          frame,
          text=i,
@@ -184,8 +184,8 @@ def create_checkboxes(frame, list):
          bg="gray",
          command=lambda i=i, var=checkbox_var: on_checkbox_change(i, var)
       )
-      checkbox.pack(anchor="w")  # Place the checkbox in the window
-      checkboxes.append(checkbox_var)  # Add the variable to the list
+      checkbox.pack(anchor="w")  
+      checkboxes.append(checkbox_var) 
 
    return checkboxes 
 
@@ -197,10 +197,6 @@ cooktime_title.pack()
 
 cooktimes = ["<60", ">=60 & <=120", ">120"]
 create_checkboxes(frame_inside_canvas, cooktimes)
-
-# for time in cooktimes:
-#     cooktime_filter = tk.Checkbutton(frame_inside_canvas, text=time, bg="gray")
-#     cooktime_filter.pack(anchor="w")
 
 cuisines = tk.Frame(frame_inside_canvas, bg="gray")
 cuisines.pack(padx=10, pady=10)
@@ -231,7 +227,8 @@ ingredient_frame.pack(fill="both", expand=True, padx=10, pady=10)
 ing_heading = tk.Label(ingredient_frame, text="Ingredients", font=("Arial", 15, "bold"), bg="white")
 ing_heading.pack()
 
-
+clear_button = tk.Button(ingredient_frame, text="Clear Ingredients", command=clear_ing_list)
+clear_button.pack()
 
 #Recipe Frame
 recipes = tk.Frame(mainframe, bg="white" )

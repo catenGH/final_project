@@ -7,6 +7,9 @@ def search_recipes(ingredient_list):
     csv_writer = csv.writer(csv_file)
     csv_writer.writerow(["Recipe Name", "Thumbnail Link", "Ingredients", "Cook Time (in minutes)", "Diet", "Cuisine", "Recipe Source"])
 
+    # Corey's Key: 6eccbe1676054b1e9304c8d1f5225764 
+    # Cates's Key: 5cb09004fe27449689868405b5a33789
+
     key = "5cb09004fe27449689868405b5a33789"
 
     format_ingr_list = ",+".join(ingredient_list)

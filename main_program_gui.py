@@ -45,8 +45,13 @@ img_ref_list = []
 #Adds ingredient to above list and deletes input from the textbox
 def add_ingr(ingr):
     ingredient_list.append(ingr)
-    disp_list = tk.Label(ingredient_frame, text=f"- {ingr}", bg="white")
-    disp_list.pack()
+
+    disp_frame = tk.Frame(ingredient_frame, bg="gray")
+    disp_frame.pack(padx=5, pady=5)
+
+    disp_list = tk.Label(disp_frame, text=ingr, bg="gray")
+    disp_list.pack(padx=5, pady=2)
+
     ingredients_input.delete(0, "end")
 
 def search_display(ingr_list):
@@ -222,7 +227,7 @@ frame_inside_canvas.bind("<Configure>", on_frame_configure)
 
 #Ingredients frame
 ingredient_frame = tk.Frame(mainframe, bg="white")
-ingredient_frame.pack(fill="both", expand=True, padx=10, pady=10)
+ingredient_frame.pack(fill="x", padx=10, pady=10)
 
 ing_heading = tk.Label(ingredient_frame, text="Ingredients", font=("Arial", 15, "bold"), bg="white")
 ing_heading.pack()

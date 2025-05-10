@@ -15,6 +15,7 @@ import pandas as pd
 
 #Function Imports from py files
 from search_recipes import search_recipes
+from cuisine_filter import cuisine_filter
 
 #Main Setup
 root = tk.Tk()
@@ -64,14 +65,22 @@ def add_ingr(ingr):
 
     ing_col += 1
 
-def search_display(ingr_list):
-    #Uses search recipe function and displays the recipes returned
+def search_display(ingr_list, filter_list, time_list):
+    #FIRST Gets rid of any previous searches:
+    for child in recipes_inner_frame.winfo_children():
+        child.destroy()
 
+    #Uses search recipe function and displays the recipes returned
     #NOTE: Comment out this when not testing search
-    search_recipes(ingr_list)
+    # search_recipes(ingr_list)
 
     #Pandas CSV functions converting necessary data to lists 
-    data = pd.read_csv("recipes.csv")
+    recipe_csv = pd.read_csv("recipes.csv")
+
+    if filter_list == []:
+        data = recipe_csv
+    else:
+        data = cuisine_filter(recipe_csv, filter_list)
 
     recipe_list = data["Recipe Name"].tolist()
     img_list = data["Thumbnail Link"].tolist()
@@ -85,7 +94,6 @@ def search_display(ingr_list):
     #rec stands for recipe
     for rec in recipe_list:
         #If there's already 3 in a row, move down a row (so that way all recipes will fit on most screens)
-        #NOTE: Cate, let me know if this looks good on your end, thanks! -Corey
         if rec_col == 3:
             rec_col = 0
             rec_row += 1
@@ -131,6 +139,7 @@ def search_display(ingr_list):
         itr+=1
         rec_col += 1
     
+#Clear ingredient list
 def clear_ing_list():
     global ing_row, ing_col
     ingredient_list = []
@@ -142,11 +151,12 @@ def clear_ing_list():
     ing_col = 0
     ing_row = 0
 
-
+#Search button
 search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3',
-                   command=lambda: search_display(ingredient_list))
+                   command=lambda: search_display(ingredient_list, filters_selected, times_selected))
 search.pack(side="right", padx=20)
 
+#Add ingredient button
 add_ingredient = tk.Button(heading, text="✚",highlightbackground='mediumorchid3',
                            command=lambda: add_ingr(ingredient.get()))
 add_ingredient.pack(side="right", padx=10)
@@ -154,9 +164,11 @@ add_ingredient.pack(side="right", padx=10)
 ingredient = tk.StringVar()
 ingredient.set("")
 
+#Ingredients input
 ingredients_input = tk.Entry(heading, textvariable=ingredient, width=50)
 ingredients_input.pack(side="right")
 
+#Frame for info
 subheading = tk.Frame(mainframe, bg="light gray")
 subheading.pack(side="top", fill="x")
 
@@ -187,31 +199,42 @@ filters_canvas.create_window((0, 0), window=frame_inside_canvas, anchor="nw")
 
 
 #Filter Code --------------------------
+filters_selected = []
+times_selected = []
+
 def on_checkbox_change(checkbox_value, checkbox_var):
-   if checkbox_var.get():
-      print(f"{checkbox_value} Checked")
-   else:
-      print(f"{checkbox_value} unchecked")
+    global filters_selected
+
+    if checkbox_var.get():
+        if checkbox_value in cuisine_list:
+            filters_selected.append(checkbox_value)
+        else:
+            times_selected.append(checkbox_value)
+    else:
+        if checkbox_value in cuisine_list:
+            filters_selected.remove(checkbox_value)
+        else:
+            times_selected.remove(checkbox_value)
 
 
 def create_checkboxes(frame, list):
-   #Stores the boolean val for each box (checked vs unchecked)
-   checkboxes = []  
+    #Stores the boolean val for each box (checked vs unchecked)
+    checkboxes = []  
 
-   # Loop to create checkboxes dynamically
-   for i in list:
-      checkbox_var = tk.BooleanVar()  
-      checkbox = tk.Checkbutton(
-         frame,
-         text=i,
-         variable=checkbox_var,
-         bg="gray",
-         command=lambda i=i, var=checkbox_var: on_checkbox_change(i, var)
-      )
-      checkbox.pack(anchor="w")  
-      checkboxes.append(checkbox_var) 
+    #Loop creates checkboxes dynamically
+    for i in list:
+        checkbox_var = tk.BooleanVar()  
+        checkbox = tk.Checkbutton(
+            frame,
+            text=i,
+            variable=checkbox_var,
+            bg="gray",
+            command=lambda i=i, var=checkbox_var: on_checkbox_change(i, var)
+        )
+        checkbox.pack(anchor="w")  
+        checkboxes.append(checkbox_var) 
 
-   return checkboxes 
+    return checkboxes 
 
 cooktime = tk.Frame(frame_inside_canvas, bg="gray")
 cooktime.pack()

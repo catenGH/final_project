@@ -43,16 +43,26 @@ ingredient_list = []
 img_ref_list = []
 
 #Adds ingredient to above list and deletes input from the textbox
+ing_row = 0
+ing_col = 0
+
 def add_ingr(ingr):
+    global ing_row, ing_col
+
+    if ing_col == 10:
+        ing_col = 0
+        ing_row += 1
     ingredient_list.append(ingr)
 
     disp_frame = tk.Frame(inner_ing_frame, bg="gray")
-    disp_frame.pack(padx=5, pady=5)
+    disp_frame.grid(column=ing_col, row=ing_row,padx=5, pady=5)
 
     disp_list = tk.Label(disp_frame, text=ingr, bg="gray")
     disp_list.pack(padx=5, pady=2)
 
     ingredients_input.delete(0, "end")
+
+    ing_col += 1
 
 def search_display(ingr_list):
     #Uses search recipe function and displays the recipes returned
@@ -122,11 +132,15 @@ def search_display(ingr_list):
         rec_col += 1
     
 def clear_ing_list():
+    global ing_row, ing_col
     ingredient_list = []
 
     #Destroys all children frames in the ingredient frame (.winfo_children method citation at bottom)
     for child in inner_ing_frame.winfo_children():
         child.destroy()
+
+    ing_col = 0
+    ing_row = 0
 
 
 search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3',
@@ -241,7 +255,7 @@ clear_button = tk.Button(ingredient_frame, text="Clear Ingredients", command=cle
 clear_button.pack()
 
 inner_ing_frame = tk.Frame(ingredient_frame, bg="white")
-inner_ing_frame.pack(fill="x")
+inner_ing_frame.pack()
 
 #Recipe Frame
 recipes = tk.Frame(mainframe, bg="white" )

@@ -46,7 +46,7 @@ img_ref_list = []
 def add_ingr(ingr):
     ingredient_list.append(ingr)
 
-    disp_frame = tk.Frame(ingredient_frame, bg="gray")
+    disp_frame = tk.Frame(inner_ing_frame, bg="gray")
     disp_frame.pack(padx=5, pady=5)
 
     disp_list = tk.Label(disp_frame, text=ingr, bg="gray")
@@ -123,6 +123,11 @@ def search_display(ingr_list):
     
 def clear_ing_list():
     ingredient_list = []
+
+    #Destroys all children frames in the ingredient frame (.winfo_children method citation at bottom)
+    for child in inner_ing_frame.winfo_children():
+        child.destroy()
+
 
 search = tk.Button(heading, text="🔎", highlightbackground='mediumorchid3',
                    command=lambda: search_display(ingredient_list))
@@ -235,6 +240,9 @@ ing_heading.pack()
 clear_button = tk.Button(ingredient_frame, text="Clear Ingredients", command=clear_ing_list)
 clear_button.pack()
 
+inner_ing_frame = tk.Frame(ingredient_frame, bg="white")
+inner_ing_frame.pack(fill="x")
+
 #Recipe Frame
 recipes = tk.Frame(mainframe, bg="white" )
 recipes.pack(fill="both", expand=True, padx=10, pady=10)
@@ -264,3 +272,4 @@ root.mainloop()
 # https://stackoverflow.com/questions/71677889/create-a-scrollbar-to-a-full-window-tkinter-in-python - used this to figure out how to scrol
 # https://stackoverflow.com/questions/60594244/tkinter-scrollregion-not-updating?utm_source=chatgpt.com - updates the scroll region if its needed or not based on window size3
 # https://www.tutorialspoint.com/creating-multiple-check-boxes-using-a-loop-in-tkinter - Used to help with code for checkbox filters
+# https://www.youtube.com/watch?v=A6m7TmjuNzw - Used for learning to get all children from a frame

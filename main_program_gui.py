@@ -287,3 +287,4 @@ root.mainloop()
 # https://stackoverflow.com/questions/60594244/tkinter-scrollregion-not-updating?utm_source=chatgpt.com - updates the scroll region if its needed or not based on window size3
 # https://www.tutorialspoint.com/creating-multiple-check-boxes-using-a-loop-in-tkinter - Used to help with code for checkbox filters
 # https://www.youtube.com/watch?v=A6m7TmjuNzw - Used for learning to get all children from a frame
+# https://stackoverflow.com/questions/20725722/variable-referenced-before-assignment-python - Adding global to the start of functions to properly use global variables

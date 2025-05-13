@@ -59,6 +59,7 @@ def add_ingr(ingr):
 
     ing_col += 1
 
+#Would be used for recipe links, but trying to bind links in the loop resulted in the last recipe link overwriting all others
 def open_link(url):
     webbrowser.open_new_tab(url)
 
@@ -80,6 +81,7 @@ def search_display(ingr_list, filter_list, time_list):
     link_list = data["Recipe Source"].tolist()
     img_list = data["Thumbnail Link"].tolist()
     diet_list = data["Diet"].tolist()
+    cooktime_list = data["Cook Time (in minutes)"].tolist()
 
     #Global variables to iterate through the images, diets, and frames properly
     itr = 0
@@ -95,14 +97,19 @@ def search_display(ingr_list, filter_list, time_list):
 
         img_link = img_list[itr]
         rec_link = link_list[itr]
+        cook_time = cooktime_list[itr]
 
         recipe_box = tk.Frame(recipes_inner_frame, bg="gray", bd=2, padx=10, pady=10)
         recipe_title = tk.Label(recipe_box, text=rec, font=('Helvetica',12, "bold", "underline"), bg="gray", fg="white", cursor="hand2")
         recipe_canvas = tk.Canvas(recipe_box, width=300, height=300, bg="white")
+        recipe_time = tk.Label(recipe_box,text=f"{cook_time} Minutes", bg="gray")
         recipe_canvas.pack()
         recipe_title.pack(anchor="w")
-        recipe_title.bind("<Button-1>", lambda e:
-                          open_link(rec_link))
+        recipe_time.pack(anchor="w")
+
+        #For some reason binding the recipe link only binds the final recipe link to ALL recipes
+        # recipe_title.bind("<Button-1>", lambda e:
+        #                   open_link(rec_link))
         
         #Img display, will display a default canvas if img doesn't work
         try:

@@ -77,10 +77,7 @@ def search_display(ingr_list, filter_list, time_list):
     #Pandas CSV functions converting necessary data to lists 
     recipe_csv = pd.read_csv("recipes.csv")
 
-    if filter_list == []:
-        data = recipe_csv
-    else:
-        data = cuisine_filter(recipe_csv, filter_list)
+    data = cuisine_filter(recipe_csv, filter_list, time_list)
 
     recipe_list = data["Recipe Name"].tolist()
     img_list = data["Thumbnail Link"].tolist()

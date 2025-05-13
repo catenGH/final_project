@@ -176,7 +176,7 @@ instructions.pack(pady=5)
 other_stuff = tk.Label(subheading, text="Each recipe will contain a picture as well as information about its cooktime, ingredients, cuisine, diet, and allergens!", bg="light gray")
 other_stuff.pack(pady=5)
 
-more_instructions = tk.Label(subheading, text="↙ You can also filter for specific cook times and cuisines!", bg="light gray")
+more_instructions = tk.Label(subheading, text="↙ You can also filter for specific cook times and cuisines!  Select filters and click 🔎 again to search for filtered recipes!", bg="light gray")
 more_instructions.pack(pady=5)
 
 #Side Filters

@@ -49,9 +49,9 @@ def cuisine_filter(recipe, selected_filters, selected_time):
 
 # filter_list = ["Asian"]
 # print(cuisine_filter(recipe, filter_list))
-recipe = pd.read_csv("recipes.csv")
-filter_list = []
-selected_time = []
-# we can try hard coding each checkbox to match 1, 2, 3 (so like the first option is 1, second option is 2, etc. etc.)
+# recipe = pd.read_csv("recipes.csv")
+# filter_list = []
+# selected_time = []
+# # we can try hard coding each checkbox to match 1, 2, 3 (so like the first option is 1, second option is 2, etc. etc.)
 
-print(cuisine_filter(recipe, filter_list, selected_time))
+# print(cuisine_filter(recipe, filter_list, selected_time))

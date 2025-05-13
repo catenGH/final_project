@@ -72,7 +72,7 @@ def search_display(ingr_list, filter_list, time_list):
 
     #Uses search recipe function and displays the recipes returned
     #NOTE: Comment out this when not testing search
-    # search_recipes(ingr_list)
+    search_recipes(ingr_list)
 
     #Pandas CSV functions converting necessary data to lists 
     recipe_csv = pd.read_csv("recipes.csv")

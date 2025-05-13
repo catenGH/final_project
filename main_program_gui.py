@@ -1,10 +1,3 @@
-'''
-TO DO:
-- Add more info to recipe cards
-- Click recipe cards to go to recipe
-- Connect filters 
-'''
-
 #Imports
 from tkinter import ttk
 import tkinter as tk
@@ -12,6 +5,7 @@ import requests
 from PIL import ImageTk, Image
 from io import BytesIO
 import pandas as pd
+import webbrowser
 
 #Function Imports from py files
 from search_recipes import search_recipes
@@ -65,6 +59,9 @@ def add_ingr(ingr):
 
     ing_col += 1
 
+def open_link(url):
+    webbrowser.open_new_tab(url)
+
 def search_display(ingr_list, filter_list, time_list):
     #FIRST Gets rid of any previous searches:
     for child in recipes_inner_frame.winfo_children():
@@ -72,7 +69,7 @@ def search_display(ingr_list, filter_list, time_list):
 
     #Uses search recipe function and displays the recipes returned
     #NOTE: Comment out this when not testing search
-    search_recipes(ingr_list)
+    # search_recipes(ingr_list)
 
     #Pandas CSV functions converting necessary data to lists 
     recipe_csv = pd.read_csv("recipes.csv")
@@ -80,6 +77,7 @@ def search_display(ingr_list, filter_list, time_list):
     data = cuisine_filter(recipe_csv, filter_list, time_list)
 
     recipe_list = data["Recipe Name"].tolist()
+    link_list = data["Recipe Source"].tolist()
     img_list = data["Thumbnail Link"].tolist()
     diet_list = data["Diet"].tolist()
 
@@ -96,12 +94,15 @@ def search_display(ingr_list, filter_list, time_list):
             rec_row += 1
 
         img_link = img_list[itr]
+        rec_link = link_list[itr]
 
         recipe_box = tk.Frame(recipes_inner_frame, bg="gray", bd=2, padx=10, pady=10)
-        recipe_title = tk.Label(recipe_box, text=rec, font=('Helvetica',12, "bold"), bg="gray", fg="white")
+        recipe_title = tk.Label(recipe_box, text=rec, font=('Helvetica',12, "bold", "underline"), bg="gray", fg="white", cursor="hand2")
         recipe_canvas = tk.Canvas(recipe_box, width=300, height=300, bg="white")
         recipe_canvas.pack()
         recipe_title.pack(anchor="w")
+        recipe_title.bind("<Button-1>", lambda e:
+                          open_link(rec_link))
         
         #Img display, will display a default canvas if img doesn't work
         try:
